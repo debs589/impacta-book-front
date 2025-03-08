@@ -15,14 +15,14 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.WriteHeader(statusCode)
 
 	if statusCode != http.StatusNoContent {
-		if error := json.NewEncoder(w).Encode(data); error != nil {
-			log.Fatal(error)
+		if err := json.NewEncoder(w).Encode(data); err != nil {
+			log.Fatal(err)
 		}
 	}
 }
 
-func TreateStatusCodeError(w http.ResponseWriter, r *http.Response) {
-	var error ErrorAPI
-	json.NewDecoder(r.Body).Decode(&error)
-	JSON(w, r.StatusCode, error)
+func TreatStatusCodeError(w http.ResponseWriter, r *http.Response) {
+	var errApi ErrorAPI
+	json.NewDecoder(r.Body).Decode(&errApi)
+	JSON(w, r.StatusCode, errApi)
 }

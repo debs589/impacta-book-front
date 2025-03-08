@@ -18,6 +18,11 @@ function createUser(event) {
             nickname: $('#nickname').val(),
             password: $('#password').val()
         }
+    }).done(function() {
+        alert("User registered sucessfully!");
+    }).fail(function(responseApi){
+        console.log(responseApi)
+        alert("Error during registration");
     });
 
 }

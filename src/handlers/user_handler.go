@@ -3,8 +3,7 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"log"
+	"impacta-book/src/response"
 	"net/http"
 )
 
@@ -19,16 +18,23 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		log.Fatal(err)
+		response.JSON(w, http.StatusBadRequest, response.ErrorAPI{Error: err.Error()})
+		return
 	}
 
 	url := "http://localhost:5000/user/"
-	response, err := http.Post(url, "application/json", bytes.NewBuffer(user))
+	responseApi, err := http.Post(url, "application/json", bytes.NewBuffer(user))
 	if err != nil {
-		log.Fatal(err)
+		response.JSON(w, http.StatusInternalServerError, response.ErrorAPI{Error: err.Error()})
+		return
 	}
-	defer response.Body.Close()
+	defer responseApi.Body.Close()
 
-	fmt.Println(response.Body)
+	if responseApi.StatusCode >= 400 {
+		response.TreatStatusCodeError(w, responseApi)
+		return
+	}
+
+	response.JSON(w, responseApi.StatusCode, nil)
 
 }

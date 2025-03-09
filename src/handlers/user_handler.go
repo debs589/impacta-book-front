@@ -3,8 +3,10 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"impacta-book/src/response"
 	"net/http"
+	"os"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +23,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		response.JSON(w, http.StatusBadRequest, response.ErrorAPI{Error: err.Error()})
 		return
 	}
-
-	url := "http://localhost:5000/user/"
+	url := fmt.Sprintf("%s/user/", os.Getenv("API_URL"))
 	responseApi, err := http.Post(url, "application/json", bytes.NewBuffer(user))
 	if err != nil {
 		response.JSON(w, http.StatusInternalServerError, response.ErrorAPI{Error: err.Error()})

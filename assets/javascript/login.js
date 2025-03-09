@@ -13,6 +13,6 @@ function login(event) {
     }).done(function() {
         window.location = "/home";
     }).fail(function() {
-        Swal.fire("User or password incorrect!", "error");
+        alert("User or password incorrect!");
     });
 }

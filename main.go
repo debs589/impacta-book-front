@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"impacta-book/config"
 	"impacta-book/src/router"
 	"impacta-book/src/utils"
 	"log"
@@ -9,11 +10,13 @@ import (
 )
 
 func main() {
+	config.LoadEnv()
 
-	fmt.Println("Running application")
 	utils.LoadTemplates()
 
 	r := router.Generate()
-	log.Fatal(http.ListenAndServe(":3000", r))
+
+	fmt.Println("Running application")
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Port), r))
 
 }

@@ -9,5 +9,5 @@ var mainPageRoute = Route{
 	URI:                    "/home",
 	Method:                 http.MethodGet,
 	Function:               handlers.LoadMainPage,
-	AuthenticationRequired: false,
+	AuthenticationRequired: true,
 }

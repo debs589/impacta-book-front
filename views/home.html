@@ -6,30 +6,7 @@
     <link href="/assets/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">ImpactaBook</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-principal" aria-controls="navbar-principal" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-principal">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home Page <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile">My Profile</a>
-                </li>
-                <li class="nav-item">
-                    <form class="form-inline my-2 my-lg-0" action="/search-users" method="GET">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search users" id="user"
-                               name="user" required="required">
-                    </form>
-                </li>
-
-            </ul>
-        </div>
-</nav>
-
+    {{ template "header" }}
 <div class="container-fluid">
     <div class="row mt-4">
         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
@@ -54,20 +31,24 @@
             </fieldset>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
-            {{ range . }}
+            {{ range .Publications }}
             <div class="jumbotron">
                 <h1 class="display-4"> {{ .Title }} </h1>
                 <p class="lead">{{ .Content }}</p>
                 <a href="#"> {{ .AuthorNick }} </a>
                 <hr class="my-4">
-                <p>Botões</p>
+                <p>Button</p>
             </div>
             {{ end }}
         </div>
     </div>
 </div>
-    <script src="/assets/javascript/jquery.js"></script>
-    <script src="/assets/javascript/bootstrap.js"></script>
+    {{ template "footer" }}
+
+    {{ template "scripts"}}
+
+    <script src="/assets/javascript/publications.js"></script>
+
 </body>
 
 </html>

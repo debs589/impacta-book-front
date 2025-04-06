@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gorilla/mux"
+	"impacta-book/src/middlewares"
 	"net/http"
 )
 
@@ -18,7 +19,11 @@ func Configure(router *mux.Router) *mux.Router {
 	routes = append(routes, mainPageRoute)
 
 	for _, route := range routes {
-		router.HandleFunc(route.URI, route.Function).Methods(route.Method)
+		if route.AuthenticationRequired {
+			router.HandleFunc(route.URI, middlewares.Logger(middlewares.Authenticate(route.Function))).Methods(route.Method)
+		} else {
+			router.HandleFunc(route.URI, middlewares.Logger(route.Function)).Methods(route.Method)
+		}
 	}
 
 	fileServer := http.FileServer(http.Dir("./assets/"))

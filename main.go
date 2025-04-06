@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"impacta-book/config"
+	"impacta-book/src/config"
+	"impacta-book/src/cookies"
 	"impacta-book/src/router"
 	"impacta-book/src/utils"
 	"log"
@@ -11,6 +12,7 @@ import (
 
 func main() {
 	config.LoadEnv()
+	cookies.Configure()
 
 	utils.LoadTemplates()
 

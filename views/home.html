@@ -32,13 +32,11 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
             {{ range .Publications }}
-            <div class="jumbotron">
-                <h1 class="display-4"> {{ .Title }} </h1>
-                <p class="lead">{{ .Content }}</p>
-                <a href="#"> {{ .AuthorNick }} </a>
-                <hr class="my-4">
-                <p>Button</p>
-            </div>
+                {{ if (eq .AuthorID $.UserID) }}
+                    {{ template "authorized-publication" . }}
+                {{ else }}
+                    {{ template "unathorized-publication". }}
+                {{ end }}
             {{ end }}
         </div>
     </div>

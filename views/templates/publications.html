@@ -1,17 +1,5 @@
-<div class="jumbotron">
-
-
-    {{ if (eq .AuthorID $.UserID) }}
-    <p>Buttons like, edit and delete</p>
-    {{ else }}
-    <p>Button like</p>
-    {{ end }}
-
-
-</div>
-
 {{ define "likes"}}
-    <i class="fa-solid fa-heart"></i>
+    <i class="fa-solid fa-heart like-publication" style="cursor: pointer;"></i>
     <span> {{ .Likes }}</span>
 
 {{ end }}

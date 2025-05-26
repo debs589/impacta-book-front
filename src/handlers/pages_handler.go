@@ -11,6 +11,8 @@ import (
 	"impacta-book/src/utils"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func LoadLoginPage(w http.ResponseWriter, r *http.Request) {
@@ -53,4 +55,33 @@ func LoadMainPage(w http.ResponseWriter, r *http.Request) {
 		UserID:       userID,
 	})
 
+}
+
+func LoadPageEditPublication(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(mux.Vars(r)["publicationId"])
+	if err != nil {
+		response.JSON(w, http.StatusBadRequest, response.ErrorAPI{Error: err.Error()})
+		return
+	}
+
+	url := fmt.Sprintf("%s/publication/%d", config.APIURL, id)
+	responseApi, err := request.RequestWithAuthentication(r, http.MethodGet, url, nil)
+	if err != nil {
+		response.JSON(w, http.StatusInternalServerError, response.ErrorAPI{Error: err.Error()})
+		return
+	}
+	defer responseApi.Body.Close()
+
+	if responseApi.StatusCode >= 400 {
+		response.TreatStatusCodeError(w, responseApi)
+		return
+	}
+
+	var publication models.Publication
+	if err = json.NewDecoder(responseApi.Body).Decode(&publication); err != nil {
+		response.JSON(w, http.StatusUnprocessableEntity, response.ErrorAPI{Error: err.Error()})
+		return
+	}
+
+	utils.RenderTemplate(w, "edit-publication.html", publication)
 }

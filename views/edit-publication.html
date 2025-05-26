@@ -1,0 +1,41 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImpactaBook - Edit Publication - {{ .Title }} </title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+{{ template "header" }}
+
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Edit Publication</h3>
+            <div class="form-group">
+                <label for="title">Títle</label>
+                <input type="text" class="form-control" id="title" name="title"
+                       placeholder="Insert the title of your publication" value=" {{ .Title }}">
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" id="content" name="content" placeholder="Insert the content of your publication">{{ .Content }}</textarea>
+            </div>
+            <button id="edit-publication" class="btn btn-info" data-publication-id="{{ .ID }}">
+                Salve
+            </button>
+        </div>
+    </div>
+</div>
+
+{{ template "footer" }}
+{{ template "scripts" }}
+
+<script src="/assets/javascript/publications.js"></script>
+
+
+</body>
+
+</html>

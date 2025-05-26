@@ -24,4 +24,16 @@ var publicationRoutes = []Route{
 		Function:               handlers.UnlikePublication,
 		AuthenticationRequired: true,
 	},
+	{
+		URI:                    "/publication/{publicationId}/edit",
+		Method:                 http.MethodGet,
+		Function:               handlers.LoadPageEditPublication,
+		AuthenticationRequired: true,
+	},
+	{
+		URI:                    "/publication/{publicationId}",
+		Method:                 http.MethodPut,
+		Function:               handlers.EditPublication,
+		AuthenticationRequired: true,
+	},
 }

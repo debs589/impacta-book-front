@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"impacta-book/src/config"
 	"impacta-book/src/request"
 	"impacta-book/src/response"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func CreatePublication(w http.ResponseWriter, r *http.Request) {
@@ -90,4 +91,39 @@ func UnlikePublication(w http.ResponseWriter, r *http.Request) {
 
 	response.JSON(w, responseApi.StatusCode, nil)
 
+}
+
+func EditPublication(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(mux.Vars(r)["publicationId"])
+	if err != nil {
+		response.JSON(w, http.StatusBadRequest, response.ErrorAPI{Error: err.Error()})
+		return
+	}
+
+	r.ParseForm()
+
+	publication, err := json.Marshal(map[string]string{
+		"title":   r.FormValue("title"),
+		"content": r.FormValue("content"),
+	})
+
+	if err != nil {
+		response.JSON(w, http.StatusBadRequest, response.ErrorAPI{Error: err.Error()})
+		return
+	}
+
+	url := fmt.Sprintf("%s/publication/%d", config.APIURL, id)
+	responseApi, err := request.RequestWithAuthentication(r, http.MethodPut, url, bytes.NewBuffer(publication))
+	if err != nil {
+		response.JSON(w, http.StatusInternalServerError, response.ErrorAPI{Error: err.Error()})
+		return
+	}
+	defer responseApi.Body.Close()
+
+	if responseApi.StatusCode >= 400 {
+		response.TreatStatusCodeError(w, responseApi)
+		return
+	}
+
+	response.JSON(w, responseApi.StatusCode, nil)
 }
